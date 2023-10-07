@@ -5,8 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="249.0" prefWidth="532.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.dep11.ChallengeFormController">
+<AnchorPane fx:id="root" prefHeight="249.0" prefWidth="532.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.dep11.ChallengeFormController">
    <children>
       <Label layoutX="68.0" layoutY="53.0" text="Who is going to take the SQL Challenge" textFill="#d01212">
          <font>
@@ -14,7 +13,7 @@
          </font>
       </Label>
       <Button fx:id="btnBack" layoutX="434.0" layoutY="199.0" mnemonicParsing="false" onAction="#btnBackOnAction" text="Back" />
-      <Label fx:id="txtName" alignment="CENTER" layoutX="98.0" layoutY="97.0" prefHeight="32.0" prefWidth="336.0" style="-fx-background-color: lightgray; -fx-border-radius: 10px; -fx-border-width: 1px; -fx-border-color: black;" text="Press start to Begin">
+      <Label fx:id="txtName" alignment="CENTER" layoutX="9.0" layoutY="97.0" prefHeight="32.0" prefWidth="517.0" style="-fx-background-color: lightgray; -fx-border-radius: 10px; -fx-border-width: 1px; -fx-border-color: black;" text="Press start to Begin">
          <font>
             <Font size="16.0" />
          </font>

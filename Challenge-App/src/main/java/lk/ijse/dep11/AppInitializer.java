@@ -24,7 +24,7 @@ public class AppInitializer extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        AnchorPane root = FXMLLoader.load(getClass().getResource("/view/MainForm.fxml"));
+        AnchorPane root = FXMLLoader.load(getClass().getResource("/view/ChallengeForm.fxml"));
         Scene MainScene = new Scene(root);
         primaryStage.setScene(MainScene);
         primaryStage.setTitle("Student Management System");
