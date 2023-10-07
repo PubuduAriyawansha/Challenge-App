@@ -1,9 +1,7 @@
 package lk.ijse.dep11;
 
 import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.dep11.db.DbConnection;
@@ -15,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 public class MainFormController {
     public AnchorPane root;
@@ -36,6 +35,7 @@ public class MainFormController {
         btnDelete.setDisable(true);
         tblStudent.getSelectionModel().selectedItemProperty().addListener((o,old,cur)->{
             btnDelete.setDisable(cur==null);
+            btnSave.setDisable(true);
             if(cur!=null){
                 txtID.setText(cur.getId());
                 txtName.setText(cur.getName());
@@ -66,10 +66,58 @@ public class MainFormController {
     }
 
     public void btnSaveONACtion(ActionEvent actionEvent) {
+        if (!isDataValid()) return;
+        String id = txtID.getText().strip();
+        String name = txtName.getText().strip();
+        String card = txtCard.getText().strip();
 
+        boolean result = addStudent(id, name, card.isBlank() ? null : card);
+        if (result){
+            new Alert(Alert.AlertType.INFORMATION,"Added").show();
+            tblStudent.getItems().add(new Student(id,name,card,"Yet to Face"));
+            btnNew.fire();
+        }else{
+            new Alert(Alert.AlertType.ERROR,"Student Id Already Exists").show();
+            txtID.selectAll();
+            txtID.requestFocus();
+        }
+
+    }
+    private boolean isDataValid(){
+        String id = txtID.getText().strip();
+        String name = txtName.getText().strip();
+        String card = txtCard.getText().strip();
+
+        if(!isValid(id)){
+            txtID.requestFocus();
+            txtID.selectAll();
+            return false;
+        } else if (!name.matches("[A-Za-z ]{3,}")){
+            txtName.requestFocus();
+            txtName.selectAll();
+            return false;
+        } else if (card.isBlank() && !card.matches("[A-Za-z ]{2,}")){
+            txtCard.requestFocus();
+            txtCard.selectAll();
+            return false;
+        }
+        return true;
     }
 
     public void btnDeleteOnACtion(ActionEvent actionEvent) {
+        Optional<ButtonType> option = new Alert(Alert.AlertType.CONFIRMATION,"Are you sure you want to delete",
+                ButtonType.YES, ButtonType.NO).showAndWait();
+        if(option.get()==ButtonType.YES) {
+            Student selectedStudent = tblStudent.getSelectionModel().getSelectedItem();
+            try {
+                tblStudent.getItems().remove(selectedStudent);
+                deleteStudent(selectedStudent.getId());
+                btnNew.fire();
+            } catch (Exception e) {
+                new Alert(Alert.AlertType.ERROR, "Somethign went wring").show();
+                e.printStackTrace();
+            }
+        }
     }
 
     public void btnNewOnACtion(ActionEvent actionEvent) {
