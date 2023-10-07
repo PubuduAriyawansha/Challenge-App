@@ -87,7 +87,7 @@ public class MainFormController {
             Statement stm = connection.createStatement();
             String sql = String.format("DELETE FROM student WHERE id ='%s'",id);
             int affected = stm.executeUpdate(sql);
-            return affected!=1;
+            return affected==1;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
