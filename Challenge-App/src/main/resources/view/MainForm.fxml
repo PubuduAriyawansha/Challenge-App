@@ -22,7 +22,7 @@
       </Label>
       <Button fx:id="btnNew" layoutX="287.0" layoutY="25.0" mnemonicParsing="false" onAction="#btnNewOnACtion" text="+ New Student" />
       <Button fx:id="btnLoadCsv" layoutX="415.0" layoutY="25.0" mnemonicParsing="false" onAction="#btnLoadCsvOnAction" text="Load Student from csv" />
-      <TableView fx:id="tblStudent" layoutX="25.0" layoutY="189.0" prefHeight="205.0" prefWidth="569.0">
+      <TableView fx:id="tblStudent" layoutX="25.0" layoutY="189.0" onDragDropped="#DragDropepdOnAction" onDragOver="#DragOverOnAction" prefHeight="204.0" prefWidth="559.0">
          <columns>
             <TableColumn prefWidth="121.0" text="Student ID" />
             <TableColumn prefWidth="123.0" text="Name" />

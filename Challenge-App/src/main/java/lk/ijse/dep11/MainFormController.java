@@ -3,6 +3,8 @@ package lk.ijse.dep11;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import lk.ijse.dep11.db.DbConnection;
@@ -228,4 +230,17 @@ public class MainFormController {
         return (studentNumber>0 && studentNumber<80);
     }
 
+    public void DragDropepdOnAction(DragEvent dragEvent) {
+        if (dragEvent != null && dragEvent.getDragboard() != null &&
+                !dragEvent.getDragboard().getFiles().isEmpty()) {
+            File file = dragEvent.getDragboard().getFiles().get(0);
+            if (file != null && file.getAbsolutePath().endsWith("csv")) {
+                readCsvFile(file);
+            }
+        }
+    }
+
+    public void DragOverOnAction(DragEvent dragEvent) {
+        dragEvent.acceptTransferModes(TransferMode.ANY);
+    }
 }
