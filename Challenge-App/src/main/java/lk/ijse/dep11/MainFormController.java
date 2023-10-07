@@ -42,9 +42,31 @@ public class MainFormController {
                 txtCard.setText(cur.getCard());
             }
         });
+
+        loadAllStudent();
+    }
+
+    private void loadAllStudent() {
+        Connection connection = DbConnection.getInstance().getConnection();
+        try {
+            Statement stm = connection.createStatement();
+            String sql = "SELECT * FROM student";
+            ResultSet rst = stm.executeQuery(sql);
+            while (rst.next()){
+                String id = rst.getString("id");
+                String name = rst.getString("name");
+                String card = rst.getString("card");
+                String status = rst.getBoolean("status")?"Faced":"Yet to face";
+
+                tblStudent.getItems().add(new Student(id,name,card,status));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void btnSaveONACtion(ActionEvent actionEvent) {
+
     }
 
     public void btnDeleteOnACtion(ActionEvent actionEvent) {
