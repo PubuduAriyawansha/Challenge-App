@@ -4,9 +4,11 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
 import lk.ijse.dep11.db.DbConnection;
 import lk.ijse.dep11.tm.Student;
 
+import java.io.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -129,7 +131,54 @@ public class MainFormController {
     }
 
     public void btnLoadCsvOnAction(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV files","*.csv"));
+        fileChooser.setTitle("Select a csv file");
+        File file = fileChooser.showOpenDialog(root.getScene().getWindow());
+        if(file==null) return;
+        readCsvFile(file);
     }
+    private void readCsvFile(File file) {
+        try(FileReader fr = new FileReader(file); BufferedReader br = new BufferedReader(fr)) {
+            String str = br.readLine();
+            String[] split = str.split(",");
+            int idindex=-1;
+            int nameindex=-1;
+            int cardindex=-1;
+            for (int i = 0; i < split.length; i++) {
+                String string = split[i];
+                if(string.equalsIgnoreCase("id") )idindex=i;
+                if(string.equalsIgnoreCase("name")) nameindex=i;
+                if(string.equalsIgnoreCase("card") )cardindex=i;
+            }
+            if(idindex==-1||nameindex==-1) return;
+            String line = null;
+            int importfiles=0;
+            while ((line=br.readLine())!=null){
+                try{
+                    split=line.split(",");
+                    String id = split[idindex];
+                    String name= split[nameindex];
+                    String card = null;
+                    if(cardindex!=-1)  card = split[cardindex];
+                    try{
+                        boolean result = addStudent(id, name, card);
+                        if(result){
+                            tblStudent.getItems().add(new Student(id,name,card,"Yet to face"));
+                            importfiles++;
+                        }
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+                } catch (ArrayIndexOutOfBoundsException e){}
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public boolean addStudent(String id, String name, String card){
         Connection connection = DbConnection.getInstance().getConnection();
         try {
