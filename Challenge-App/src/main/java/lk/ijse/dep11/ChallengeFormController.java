@@ -105,7 +105,7 @@ public class ChallengeFormController {
             btnStart.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    txtName.setText(txtName.getText());
+//                    txtName.setText(txtName.getText());
                     String[] split = txtName.getText().split(" : ");
                     selecetedStudent = split[0];
                     AnimatedStudent.cancel();
